@@ -26,7 +26,7 @@ td {
 
 .button-left {
   background-color: white;
-  border-radius: 5px 0 0 5px;
+  border-radius: 8px 0 0 8px;
   border: 1px solid var(--light-gray);
   border-right: none;
 }
@@ -39,10 +39,13 @@ td {
   background-color: white;
   border: 1px solid var(--light-gray);
 }
+.month-container {
+  display: flex;
+}
 
 .button-right {
   background-color: white;
-  border-radius: 0 5px 5px 0;
+  border-radius: 0 8px 8px 0;
   border: 1px solid var(--light-gray);
   border-left: none;
 }
@@ -53,7 +56,7 @@ td {
 
 .btn-second {
   background-color: white;
-  border-radius: 5px;
+  border-radius: 8px;
   border: 1px solid var(--light-gray);
 }
 
