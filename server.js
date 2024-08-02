@@ -1,5 +1,18 @@
-const express = require('express') //express를 설치했기 때문에 가져올 수 있다.
-const app = express()
+const express = require('express');
+const app = express();
+require('dotenv').config();
+
+const mysql = require('mysql');
+const connection = mysql.createConnection({
+    host: 'localhost',
+    user: 'root',
+    password: process.env.DB_PASSWORD,
+    database: 'household_db'
+});
+
+connection.connect();
+
+
 
 app.get('/account', (req, res) => {
     const data = [
@@ -21,6 +34,12 @@ app.get('/account', (req, res) => {
         },
 
     ]
+    connection.query('select * from household_db.category', (error, rows, fields) => {
+        if (error) throw error;
+        console.log('User info is: ', rows);
+    });
+
+
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.json(data);
 })
