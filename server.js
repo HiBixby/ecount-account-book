@@ -1,7 +1,7 @@
 const express = require('express') //express를 설치했기 때문에 가져올 수 있다.
 const app = express()
 
-app.get('/view', (req, res) => {
+app.get('/account', (req, res) => {
     const data = [
         {
             id: 1,
