@@ -29,7 +29,7 @@ async function renderHistory() {
         }
         const tr = document.createElement('tr');
         tr.innerHTML = `<td><input type="checkbox" /></td>
-                <td>${data.time}</td>
+                <td>${data.transaction_date}</td>
                 <td>${data.asset}</td>
                 <td>${data.type}</td>
                 <td>${data.content}</td>
