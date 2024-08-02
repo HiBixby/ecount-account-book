@@ -10,7 +10,7 @@
 
 <body>
     <aside>
-        <form class="transaction-form">
+        <form class="transaction-form" name="transaction">
             <header>
                 <button type="button" class="btn-close">
                     <img src="./images/icon-close.png" alt="닫기" width="16px" height="16px" />
@@ -20,8 +20,8 @@
             <div class="radio-btn-container">
                 <input type="radio" id="income" name="transaction_type" value="income" checked />
                 <label for="income" class="label-income">수입</label>
-                <input type="radio" id="expenditure" name="transaction_type" value="expenditure" />
-                <label id="expenditure" class="label-expenditure">지출</label>
+                <input type="radio" id="expense" name="transaction_type" value="expense" />
+                <label for="expense" class="label-expense">지출</label>
             </div>
             <div style="display: flex; width: 100%; gap: 16px;">
                 <div class="input-container">
@@ -40,7 +40,7 @@
             </div>
             <div class="input-container">
                 <label for="category">분류</label>
-                <select name="category">
+                <select name="category" id="category">
 
                 </select>
             </div>
@@ -64,13 +64,13 @@
                 <input type="text" id="memo" />
             </div>
             <div class="submit-btn-container">
-                <button type="reset">삭제</button>
+                <button type="reset" id="delete-btn">삭제</button>
                 <button type="submit">저장</button>
             </div>
         </form>
     </aside>
 
-    <script src="transaction-form.js"></script>
+    <script src="transaction-form.js" type="module"></script>
 </body>
 
 </html>
