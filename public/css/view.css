@@ -59,6 +59,9 @@ td {
   border-radius: 8px;
   border: 1px solid var(--light-gray);
 }
+.btn-second:hover {
+  cursor: pointer;
+}
 
 .btn-search {
   background-color: white;
