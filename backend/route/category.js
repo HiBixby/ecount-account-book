@@ -19,6 +19,8 @@ router.get('/sub', (req, res) => {
     if (err) {
       return res.status(500).send('Database error');
     }
+
+    res.setHeader('Access-Control-Allow-Origin', '*');
     res.send(results);
   });
 });

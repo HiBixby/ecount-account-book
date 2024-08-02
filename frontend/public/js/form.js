@@ -1,6 +1,7 @@
 import {
   addTransaction,
   deleteTransaction,
+  getCategories,
   updateTransaction,
 } from '../api.js';
 
@@ -20,7 +21,8 @@ const floatingButtonContainer = document.querySelector(
 
 function initForm() {
   // TODO: 목록에서 내역 클릭 시 해당 내역 상세 불러오기
-  // TODO: 카테고리 분류 select tag 하위 option으로 채우기
+
+  renderCategory();
 
   if (!transactionId) {
     deleteButton.disabled = true;
@@ -28,6 +30,22 @@ function initForm() {
 }
 
 initForm();
+
+async function renderCategory() {
+  const type = document.querySelector(
+    'input[name="transaction_type"]:checked',
+  ).value;
+  const categorySelect = document.getElementById('category');
+
+  const categories = await getCategories(type);
+
+  categories.forEach(category => {
+    const option = document.createElement('option');
+    option.value = category.id;
+    option.textContent = category.name;
+    categorySelect.appendChild(option);
+  });
+}
 
 async function submitHandler(event) {
   event.preventDefault();

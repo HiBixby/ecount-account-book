@@ -29,9 +29,20 @@ router.post('/', (req, res) => {
       if (err) {
         return res.status(500).send('database error');
       }
+
+      res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+      res.setHeader('Access-Control-Allow-Methods', 'POST');
+      res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
       res.send(`${type} inserted successfully`);
     },
   );
+});
+
+router.options('/', (req, res) => {
+  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+  res.setHeader('Access-Control-Allow-Methods', 'POST');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  res.send();
 });
 
 /** 수입 지출 수정  */
@@ -56,6 +67,7 @@ router.put('/:id', (req, res) => {
     if (err) {
       return res.status(500).send('database error');
     }
+    res.setHeader('Access-Control-Allow-Origin', '*');
     res.send('updated successfully');
   });
 });
@@ -68,33 +80,31 @@ router.delete('/:id', (req, res) => {
     if (err) {
       return res.status(500).send('database error');
     }
+    res.setHeader('Access-Control-Allow-Origin', '*');
     res.send('deleted successfully');
   });
 });
-
 
 router.get('/', (req, res) => {
   const data = [
     {
       id: 1,
-      time: "날짜1",
-      asset: "카카오뱅크",
-      type: "식비",
-      content: "외식",
-      price: 50000
+      time: '날짜1',
+      asset: '카카오뱅크',
+      type: '식비',
+      content: '외식',
+      price: 50000,
     },
     {
       id: 2,
-      time: "날짜2",
-      asset: "카카오뱅크",
-      type: "식비",
-      content: "외식",
-      price: -50001
+      time: '날짜2',
+      asset: '카카오뱅크',
+      type: '식비',
+      content: '외식',
+      price: -50001,
     },
-
-  ]
-  const query =
-    `
+  ];
+  const query = `
   SELECT 
       h.id AS id,
       h.transaction_date,
@@ -123,18 +133,15 @@ router.get('/', (req, res) => {
         asset: row.asset,
         content: row.content,
         price: row.price,
-        type: row.type
-      }
+        type: row.type,
+      };
     });
 
     console.log(formattedResults);
 
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.json(formattedResults);
-
   });
-
-
-})
+});
 
 module.exports = router;
