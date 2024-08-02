@@ -4,6 +4,7 @@ const transactions = require('./route/transactions');
 
 const app = express();
 
+app.use(express.json());
 app.use('/account', transactions);
 
 const PORT = 5000;
