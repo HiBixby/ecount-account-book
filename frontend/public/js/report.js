@@ -1,4 +1,13 @@
 const BACKEND = "http://localhost:5000"
+const url = new URL(window.location.href);
+
+// URLSearchParams 객체를 생성합니다
+const params = new URLSearchParams(url.search);
+
+// year와 month 값을 추출합니다
+const year = params.get('year');
+const month = params.get('month');
+
 async function getIncome(year, month) {
     const response = await fetch(BACKEND + `/report/income?year=${year}&month=${month}`);
     return response.json();
@@ -43,4 +52,9 @@ async function showIncome(year, month) {
         }
     }
 }
-showIncome(2024, 8);
+showIncome(year, month);
+
+function showMonth() {
+    document.querySelector('h2').innerHTML = month + "월"
+}
+showMonth();
