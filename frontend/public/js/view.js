@@ -28,8 +28,9 @@ async function renderHistory() {
             outcomeAmount += data.price
         }
         const tr = document.createElement('tr');
+        const date = new Date(data.transaction_date);
         tr.innerHTML = `<td><input type="checkbox" /></td>
-                <td>${data.transaction_date}</td>
+                <td>${date.toLocaleString('ko-KR')}</td>
                 <td>${data.asset}</td>
                 <td>${data.type}</td>
                 <td>${data.content}</td>
