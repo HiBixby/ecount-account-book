@@ -27,13 +27,13 @@ async function showIncome(year, month) {
     console.log(dic)
     console.log(sum)
     const tr = document.createElement("tr");
-    tr.innerHTML = `<td>총 수입</td><td>${commaizeNumber(sum) + "원"}</td>`
+    tr.innerHTML = `<td><b>총 수입</b></td><td>${commaizeNumber(sum) + "원"}</td>`
     table.insertBefore(tr, null);
     //타입별 수입 보여주기
     for (let k in dic) {
         console.log(k)
         const tr = document.createElement("tr");
-        tr.innerHTML = `<td>${k}</td>`
+        tr.innerHTML = `<td><b>${k}</b></td>`
         table.insertBefore(tr, null);
         for (let e of dic[k]) {
             console.log(e);
@@ -42,8 +42,5 @@ async function showIncome(year, month) {
             table.insertBefore(tr, null);
         }
     }
-
-
-
 }
 showIncome(2024, 8);
