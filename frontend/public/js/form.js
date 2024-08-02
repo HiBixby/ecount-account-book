@@ -1,4 +1,8 @@
-import { addTransaction, deleteTransaction, updateTransaction } from './api.js';
+import {
+  addTransaction,
+  deleteTransaction,
+  updateTransaction,
+} from '../api.js';
 
 const form = document.forms.transaction;
 
@@ -6,6 +10,13 @@ const params = new URLSearchParams(window.location.search);
 const transactionId = params.get('transaction_id');
 
 const deleteButton = document.getElementById('delete-btn');
+const addButton = document.querySelector('.btn-add-transaction');
+const aside = document.querySelector('.transaction-aside');
+const formCloseButton = document.querySelector('.btn-close');
+const view = document.querySelector('.view');
+const floatingButtonContainer = document.querySelector(
+  '.floating-btn-container',
+);
 
 function initForm() {
   // TODO: 목록에서 내역 클릭 시 해당 내역 상세 불러오기
@@ -17,9 +28,6 @@ function initForm() {
 }
 
 initForm();
-
-form.addEventListener('submit', submitHandler);
-deleteButton.addEventListener('click', deleteHandler);
 
 async function submitHandler(event) {
   event.preventDefault();
@@ -57,3 +65,19 @@ async function deleteHandler() {
   await deleteTransaction(transactionId);
   alert('삭제 완료');
 }
+
+form.addEventListener('submit', submitHandler);
+deleteButton.addEventListener('click', deleteHandler);
+
+// 폼 열고 닫는 이벤트
+addButton.addEventListener('click', () => {
+  aside.classList.add('open');
+  view.style.marginRight = '440px';
+  floatingButtonContainer.style.right = '460px';
+});
+
+formCloseButton.addEventListener('click', () => {
+  aside.classList.remove('open');
+  view.style.marginRight = '0';
+  floatingButtonContainer.style.right = '20px';
+});
