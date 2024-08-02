@@ -4,7 +4,7 @@ const db = require('../lib/db');
 const router = express.Router();
 
 /* 수입 통계 */
-router.get('/', (req, res) => {
+router.get('/income', (req, res) => {
     const year = req.query.year;
     const month = req.query.month;
 
