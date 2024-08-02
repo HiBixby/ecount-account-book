@@ -46,9 +46,27 @@ input[type='radio']:checked + label {
   color: red;
 }
 
+.transaction-aside {
+  position: fixed;
+  top: 0;
+  right: -100%;
+  width: 440px;
+  height: 100%;
+  background-color: white;
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.05);
+  transition: right 0.3s ease;
+  z-index: 1000;
+
+  box-sizing: border-box;
+}
+
+.transaction-aside.open {
+  right: 0;
+}
+
 .transaction-form {
   width: 400px;
-  padding: 20px;
+  padding: 16px 20px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -69,8 +87,8 @@ input[type='radio']:checked + label {
 
 .radio-btn-container {
   display: flex;
-  gap: 20px;
-  margin: 20px auto;
+  gap: 24px;
+  margin: 16px auto;
 }
 
 .input-container {
@@ -120,7 +138,7 @@ input[type='time']::-webkit-calendar-picker-indicator {
 .submit-btn-container {
   display: flex;
   gap: 20px;
-  margin-top: 30px;
+  margin-top: 10px;
 }
 
 .submit-btn-container button {
