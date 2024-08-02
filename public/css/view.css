@@ -4,10 +4,10 @@
   --light-gray: rgb(221, 221, 223);
   --sub-text: rgb(164, 164, 166);
 }
-.plus {
+.minus {
   color: var(--red);
 }
-.minus {
+.plus {
   color: var(--blue);
 }
 

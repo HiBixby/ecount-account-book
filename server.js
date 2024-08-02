@@ -9,7 +9,7 @@ app.get('/account', (req, res) => {
             asset: "카카오뱅크",
             type: "식비",
             content: "외식",
-            price: "50000"
+            price: 50000
         },
         {
             id: 2,
@@ -17,7 +17,7 @@ app.get('/account', (req, res) => {
             asset: "카카오뱅크",
             type: "식비",
             content: "외식",
-            price: "-50000"
+            price: -50001
         },
 
     ]
