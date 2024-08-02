@@ -1,0 +1,112 @@
+button {
+  background: inherit;
+  border: none;
+  box-shadow: none;
+  border-radius: 0;
+  padding: 0;
+  overflow: visible;
+  cursor: pointer;
+}
+
+input[type='radio'] {
+  display: none;
+}
+
+input {
+  border-radius: 8px;
+  outline: none;
+  padding: 8px 16px;
+  border: 1px solid #d0d0d0;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox  */
+input[type='number'] {
+  -moz-appearance: textfield;
+}
+
+.label-income,
+.label-expenditure {
+  cursor: pointer;
+  padding: 4px 20px;
+  background-color: rgb(241, 241, 241);
+  color: rgb(91, 91, 91);
+  border-radius: 8px;
+}
+
+input[type='radio']:checked + label {
+  background-color: white;
+  border: 1px solid red;
+  color: red;
+}
+
+.transaction-form {
+  width: 400px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.transaction-form header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.transaction-form header button {
+  position: absolute;
+  left: 28px;
+}
+
+.radio-btn-container {
+  display: flex;
+  gap: 20px;
+  margin: 20px auto;
+}
+
+.input-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-bottom: 16px;
+  gap: 8px;
+}
+
+.input-container label {
+  font-size: 14px;
+}
+
+.transaction-form select {
+  -webkit-appearance: none; /* 크롬 화살표 없애기 */
+  -moz-appearance: none; /* 파이어폭스 화살표 없애기 */
+  appearance: none; /* 화살표 없애기 */
+  border: 1px solid #d0d0d0;
+  border-radius: 8px;
+  padding: 8px 16px;
+  cursor: pointer;
+  background-image: url('./images/icon-down-arrow.png');
+  background-position: 98% center;
+  background-repeat: no-repeat;
+  background-size: 16px;
+}
+
+.submit-btn-container {
+  display: flex;
+  gap: 20px;
+  margin-top: 30px;
+}
+
+.submit-btn-container button {
+  padding: 4px 20px;
+  border: 1px solid #000000;
+  border-radius: 6px;
+}
