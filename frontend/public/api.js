@@ -25,3 +25,10 @@ export async function deleteTransaction(id) {
     method: 'DELETE',
   });
 }
+
+export async function getCategories(type) {
+  const response = await fetch(API_URL + `/category/sub?type=${type}`);
+  const data = await response.json();
+
+  return data;
+}

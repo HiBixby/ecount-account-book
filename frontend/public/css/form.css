@@ -129,7 +129,7 @@ input[type='time']::-webkit-calendar-picker-indicator {
   border-radius: 8px;
   padding: 8px 16px;
   cursor: pointer;
-  background-image: url('./images/icon-down-arrow.png');
+  background-image: url('../icon/icon-down-arrow.png');
   background-position: 98% center;
   background-repeat: no-repeat;
   background-size: 16px;
