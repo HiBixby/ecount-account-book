@@ -25,3 +25,17 @@ export async function deleteTransaction(id) {
     method: 'DELETE',
   });
 }
+
+export async function getCategories(type) {
+  const response = await fetch(API_URL + `/category/sub?type=${type}`);
+  const data = await response.json();
+
+  return data;
+}
+
+export async function getTransactionDetail(id) {
+  const response = await fetch(API_URL + `/account/detail/${id}`);
+  const data = await response.json();
+  console.log(data);
+  return data;
+}
