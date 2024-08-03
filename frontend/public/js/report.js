@@ -1,60 +1,72 @@
-const BACKEND = "http://localhost:5000"
+const BACKEND = 'http://localhost:5000';
 const url = new URL(window.location.href);
-
-// URLSearchParams 객체를 생성합니다
 const params = new URLSearchParams(url.search);
-
-// year와 month 값을 추출합니다
 const year = params.get('year');
 const month = params.get('month');
 
+// 서버에서 수입 데이터를 가져오는 함수
 async function getIncome(year, month) {
-    const response = await fetch(BACKEND + `/report/income?year=${year}&month=${month}`);
-    return response.json();
+  const response = await fetch(
+    `${BACKEND}/report/income?year=${year}&month=${month}`,
+  );
+  return response.json();
 }
+
+// 숫자를 한국 로케일에 맞게 쉼표로 구분하는 함수
 function commaizeNumber(value) {
-    return value.toLocaleString('ko-KR');
+  return value.toLocaleString('ko-KR');
 }
 
+// 수입 데이터를 테이블에 보여주는 함수
 async function showIncome(year, month) {
-    const table = document.querySelector(".income");
-    const data = await getIncome(year, month);
-    console.log(data);
-    // 총 수입 보여주기
-    let sum = 0;
-    let dic = {};
-    for (let d of data) {
-        sum += d.total_price;
+  const table = document.querySelector('.income');
+  const data = await getIncome(year, month);
+  console.log(data);
 
-        if (dic[d.parent_type] != undefined) {
-            dic[d.parent_type].push([d.type, d.total_price]);
-        } else {
-            dic[d.parent_type] = [];
-            dic[d.parent_type].push([d.type, d.total_price]);
-        }
+  let sum = 0;
+  const incomeByType = {};
+
+  // 데이터를 순회하면서 총 수입 및 타입별 수입을 계산
+  data.forEach(d => {
+    sum += d.total_price;
+    if (!incomeByType[d.parent_type]) {
+      incomeByType[d.parent_type] = [];
     }
-    console.log(dic)
-    console.log(sum)
-    const tr = document.createElement("tr");
-    tr.innerHTML = `<td><b>총 수입</b></td><td>${commaizeNumber(sum) + "원"}</td>`
-    table.insertBefore(tr, null);
-    //타입별 수입 보여주기
-    for (let k in dic) {
-        console.log(k)
-        const tr = document.createElement("tr");
-        tr.innerHTML = `<td><b>${k}</b></td>`
-        table.insertBefore(tr, null);
-        for (let e of dic[k]) {
-            console.log(e);
-            const tr = document.createElement("tr");
-            tr.innerHTML = `<td>${e[0]}</td><td>${commaizeNumber(e[1]) + "원"}</td>`
-            table.insertBefore(tr, null);
-        }
-    }
+    incomeByType[d.parent_type].push([d.type, d.total_price]);
+  });
+
+  console.log(incomeByType);
+  console.log(sum);
+
+  // 총 수입을 테이블에 추가
+  table.innerHTML = `
+        <tr>
+            <td><b>총 수입</b></td>
+            <td>${commaizeNumber(sum)}원</td>
+        </tr>
+    `;
+
+  // 타입별 수입을 테이블에 추가
+  for (const [parentType, types] of Object.entries(incomeByType)) {
+    const parentRow = document.createElement('tr');
+    parentRow.innerHTML = `<td><b>${parentType}</b></td><td></td>`;
+    table.appendChild(parentRow);
+
+    types.forEach(([type, total_price]) => {
+      const typeRow = document.createElement('tr');
+      typeRow.innerHTML = `<td>${type}</td><td>${commaizeNumber(
+        total_price,
+      )}원</td>`;
+      table.appendChild(typeRow);
+    });
+  }
 }
-showIncome(year, month);
 
+// 현재 월을 UI에 표시하는 함수
 function showMonth() {
-    document.querySelector('h2').innerHTML = month + "월"
+  document.querySelector('h2').textContent = `${month}월`;
 }
+
+// 초기 화면 렌더링
+showIncome(year, month);
 showMonth();
