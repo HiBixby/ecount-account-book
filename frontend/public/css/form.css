@@ -33,8 +33,10 @@ input[type='number'] {
 
 .label-income,
 .label-expense {
+  display: flex;
+  align-items: center;
   cursor: pointer;
-  padding: 4px 20px;
+  padding: 8px 20px;
   background-color: rgb(241, 241, 241);
   color: rgb(91, 91, 91);
   border-radius: 8px;
