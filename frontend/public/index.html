@@ -18,7 +18,7 @@
           ><button class="button-right">&gt;</button
           ><button class="btn-second report">손익 계산서</button>
         </div>
-        <div>
+        <!-- <div>
           <button class="btn-search">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -32,7 +32,7 @@
               />
             </svg>
           </button>
-        </div>
+        </div> -->
       </div>
 
       <div class="table-container">
@@ -57,14 +57,18 @@
           </li>
         </ul>
         <table class="table-history">
-          <tr>
-            <td><input type="checkbox" /></td>
-            <td class="subtext">날짜</td>
-            <td class="subtext">자산</td>
-            <td class="subtext">분류</td>
-            <td class="subtext">내용</td>
-            <td class="subtext">금액</td>
-          </tr>
+          <thead>
+            <tr>
+              <td><input type="checkbox" id="select-all" /></td>
+              <td class="subtext">날짜</td>
+              <td class="subtext">자산</td>
+              <td class="subtext">분류</td>
+              <td class="subtext">내용</td>
+              <td class="subtext">금액</td>
+            </tr>
+          </thead>
+
+          <tbody></tbody>
         </table>
       </div>
     </div>

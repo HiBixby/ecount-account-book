@@ -12,15 +12,8 @@ function commaizeNumber(value) {
 
 export async function renderHistory() {
   const response = await getHistory();
-  const table = document.querySelector('.view table');
-  table.innerHTML = `<tr>
-            <td><input type="checkbox" /></td>
-            <td class="subtext">날짜</td>
-            <td class="subtext">자산</td>
-            <td class="subtext">분류</td>
-            <td class="subtext">내용</td>
-            <td class="subtext">금액</td>
-          </tr>`; // 기존 테이블 내용 초기화
+  const table = document.querySelector('.view table tbody');
+  table.innerHTML = ``; // 기존 테이블 내용 초기화
   console.log(response);
   let totalAmount = 0;
   let incomeCnt = 0;
@@ -39,7 +32,7 @@ export async function renderHistory() {
     const tr = document.createElement('tr');
     tr.dataset.id = data.id;
     tr.style.cursor = 'pointer';
-    tr.innerHTML = `<td><input type="checkbox" /></td>
+    tr.innerHTML = `<td><input type="checkbox" class="item" /></td>
                 <td>${new Date(data.transaction_date).toLocaleString(
                   'ko-KR',
                 )}</td>
@@ -112,6 +105,13 @@ document
 document
   .querySelector('.view .button-right')
   .addEventListener('click', showNextMonth);
-document
-  .querySelector('.view .report')
-  .addEventListener('click', openReport);
+document.querySelector('.view .report').addEventListener('click', openReport);
+
+//전체 선택 전체 해제 구현
+const selectAll = document.querySelector('#select-all');
+selectAll.addEventListener('click', () => {
+  const itemCheckboxes = document.querySelectorAll('.item');
+  itemCheckboxes.forEach(function (checkbox) {
+    checkbox.checked = selectAll.checked;
+  });
+});
