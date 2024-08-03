@@ -2,6 +2,7 @@ const express = require('express');
 
 const transactions = require('./route/transactions');
 const category = require('./route/category');
+const report = require("./route/report")
 
 const app = express();
 
@@ -26,6 +27,7 @@ app.use((req, res, next) => {
 
 app.use('/account', transactions);
 app.use('/category', category);
+app.use('/report', report);
 
 const PORT = 5000;
 
