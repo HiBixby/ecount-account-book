@@ -10,8 +10,15 @@
 .plus {
   color: var(--blue);
 }
+.table-container {
+  border-radius: 10px;
+  border: 1px solid var(--light-gray);
+  background-color: white;
+  overflow-x: auto; /* 가로 스크롤 허용 */
+}
 
 .table-history {
+  min-width: 800px; /* 필요에 따라 조정, 기본 너비 설정 */
   width: 100%;
   border-radius: 0 0 10px 10px;
   border: 1px solid #d0d0d0;

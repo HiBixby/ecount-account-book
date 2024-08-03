@@ -5,17 +5,19 @@ const BACKEND = 'http://localhost:5000';
 let current = new Date();
 
 // 서버에서 거래 내역을 가져오는 함수
-async function getHistory() {
+async function getHistory(type) {
+  const year = current.getFullYear();
+  const month = current.getMonth() + 1;
+  const typeParam =
+    type === 'income' || type === 'outcome' ? `&type=${type}` : '';
+
   const response = await fetch(
-    `${BACKEND}/account?year=${current.getFullYear()}&month=${
-      current.getMonth() + 1
-    }`,
+    `${BACKEND}/account?year=${year}&month=${month}${typeParam}`,
   );
   return response.json();
 }
 
-// 테이블에 거래 내역을 렌더링하는 함수
-export async function renderHistory() {
+export async function renderHistory(type) {
   const response = await getHistory();
   const table = document.querySelector('.view table tbody');
   table.innerHTML = ''; // 기존 테이블 내용 초기화
@@ -35,11 +37,15 @@ export async function renderHistory() {
       outcomeCnt++;
       outcomeAmount += data.price;
     }
-
-    const tr = document.createElement('tr');
-    tr.dataset.id = data.id;
-    tr.style.cursor = 'pointer';
-    tr.innerHTML = `
+    if (
+      type === undefined ||
+      (type === 'income' && data.price >= 0) ||
+      (type === 'expense' && data.price < 0)
+    ) {
+      const tr = document.createElement('tr');
+      tr.dataset.id = data.id;
+      tr.style.cursor = 'pointer';
+      tr.innerHTML = `
       <td><input type="checkbox" class="item" /></td>
       <td>${new Date(data.transaction_date).toLocaleString('ko-KR')}</td>
       <td>${data.asset}</td>
@@ -49,7 +55,16 @@ export async function renderHistory() {
         ${commaizeNumber(Math.abs(data.price))}원
       </td>
     `;
-    table.appendChild(tr);
+      table.appendChild(tr);
+    }
+  });
+  // 개별 선택에 따라 전체 선택 체크박스 상태를 처리
+  const itemCheckboxes = document.querySelectorAll('.item');
+  itemCheckboxes.forEach(checkbox => {
+    checkbox.addEventListener('change', () => {
+      const allChecked = Array.from(itemCheckboxes).every(cb => cb.checked);
+      document.querySelector('#select-all').checked = allChecked;
+    });
   });
 
   // 전체, 수입, 지출 정보를 업데이트
@@ -67,15 +82,6 @@ export async function renderHistory() {
   document.querySelector('.view .outcome-amount').textContent = commaizeNumber(
     Math.abs(outcomeAmount),
   );
-
-  // 개별 선택에 따라 전체 선택 체크박스 상태를 처리
-  const itemCheckboxes = document.querySelectorAll('.item');
-  itemCheckboxes.forEach(checkbox => {
-    checkbox.addEventListener('change', () => {
-      const allChecked = Array.from(itemCheckboxes).every(cb => cb.checked);
-      document.querySelector('#select-all').checked = allChecked;
-    });
-  });
 }
 
 // 현재 월을 UI에 표시하는 함수
@@ -147,6 +153,17 @@ document.querySelector('#select-all').addEventListener('click', () => {
 document
   .querySelector('.btn-delete-transaction')
   .addEventListener('click', deleteSelectedTransaction);
+
+// 전체 / 수입 / 지출 별로 볼 수 있는 버튼 이벤트 추가
+document
+  .querySelector('.btn-all')
+  .addEventListener('click', () => renderHistory());
+document
+  .querySelector('.btn-income')
+  .addEventListener('click', () => renderHistory('income'));
+document
+  .querySelector('.btn-outcome')
+  .addEventListener('click', () => renderHistory('expense'));
 
 // 초기 렌더링
 renderHistory();
