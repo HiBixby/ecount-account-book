@@ -150,9 +150,7 @@ async function deleteSelectedTransaction() {
   );
 
   try {
-    for (const id of transactionIds) {
-      await deleteTransaction(id);
-    }
+    await Promise.all(transactionIds.map(id => deleteTransaction(id)));
 
     renderHistory();
   } catch (error) {
