@@ -32,3 +32,10 @@ export async function getCategories(type) {
 
   return data;
 }
+
+export async function getTransactionDetail(id) {
+  const response = await fetch(API_URL + `/account/detail/${id}`);
+  const data = await response.json();
+  console.log(data);
+  return data;
+}
