@@ -11,6 +11,8 @@ function commaizeNumber(value) {
 }
 
 export async function renderHistory() {
+  const selectAllCheckbox = document.querySelector('#select-all');
+  selectAllCheckbox.checked = false;
   const response = await getHistory();
   const table = document.querySelector('.view table tbody');
   table.innerHTML = ``; // 기존 테이블 내용 초기화
@@ -61,6 +63,17 @@ export async function renderHistory() {
   outcomeCntElement.innerHTML = outcomeCnt;
   const outcomeAmountElement = document.querySelector('.view .outcome-amount');
   outcomeAmountElement.innerHTML = commaizeNumber(Math.abs(outcomeAmount));
+
+  //개별 선택에 따라 전체 선택 체크박스 상태 변경
+  const itemCheckboxes = document.querySelectorAll('.item');
+  itemCheckboxes.forEach(function (checkbox) {
+    checkbox.addEventListener('change', function () {
+      const allChecked = Array.from(itemCheckboxes).every(
+        checkbox => checkbox.checked,
+      );
+      selectAllCheckbox.checked = allChecked;
+    });
+  });
 }
 
 function formatDate() {
