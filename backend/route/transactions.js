@@ -16,7 +16,7 @@ router.post('/', (req, res) => {
   } = req.body;
 
   if (!transaction_date || !asset || !category_id || !amount || !type) {
-    return res.status(400).send('input value error');
+    return res.status(400).json({ message: '필수 항목을 입력해주세요.' });
   }
 
   const query =
@@ -27,10 +27,10 @@ router.post('/', (req, res) => {
     [transaction_date, asset, category_id, description, amount, memo, type],
     err => {
       if (err) {
-        return res.status(500).send('database error');
+        return res.status(500).json({ message: 'Database error' });
       }
 
-      res.send(`${type} inserted successfully`);
+      res.json({ message: `${type} inserted successfully` });
     },
   );
 });
@@ -48,17 +48,17 @@ router.put('/:id', (req, res) => {
     !amount ||
     !type
   ) {
-    return res.status(400).send('input value error');
+    return res.status(400).json({ message: '필수 항목을 입력해주세요.' });
   }
 
   const query = 'UPDATE household_account SET ? WHERE id = ?';
 
   db.query(query, [req.body, req.params.id], err => {
     if (err) {
-      return res.status(500).send('database error');
+      return res.status(500).json({ message: 'Database error' });
     }
 
-    res.send('updated successfully');
+    res.json({ message: 'updated successfully' });
   });
 });
 
@@ -68,10 +68,10 @@ router.delete('/:id', (req, res) => {
 
   db.query(query, err => {
     if (err) {
-      return res.status(500).send('database error');
+      return res.status(500).json({ message: 'Database error' });
     }
 
-    res.send('deleted successfully');
+    res.json({ message: 'deleted successfully' });
   });
 });
 
@@ -100,7 +100,7 @@ router.get('/', (req, res) => {
     if (error) throw error;
     const formattedResults = results.map(row => {
       const date = new Date(row.transaction_date);
-      console.log(date);
+
       return {
         id: row.id,
         transaction_date: date,
@@ -111,8 +111,6 @@ router.get('/', (req, res) => {
       };
     });
 
-    console.log(formattedResults);
-
     res.json(formattedResults);
   });
 });
@@ -122,10 +120,10 @@ router.get('/detail/:id', (req, res) => {
 
   db.query(query, (err, rows) => {
     if (err) {
-      return res.status(500).send(err);
+      return res.status(500).json({ message: 'Database error' });
     }
 
-    res.send(rows[0]);
+    res.json(rows[0]);
   });
 });
 
