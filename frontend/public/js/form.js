@@ -121,7 +121,7 @@ async function submitHandler(event) {
     renderHistory();
     closeInputForm();
   } catch (error) {
-    alert('내역 저장에 실패했습니다. 다시 시도해주세요.');
+    alert(error.message);
   }
 }
 
