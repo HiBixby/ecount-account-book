@@ -75,26 +75,10 @@ router.delete('/:id', (req, res) => {
   });
 });
 
+
 router.get('/', (req, res) => {
-  const data = [
-    {
-      id: 1,
-      time: '날짜1',
-      asset: '카카오뱅크',
-      type: '식비',
-      content: '외식',
-      price: 50000,
-    },
-    {
-      id: 2,
-      time: '날짜2',
-      asset: '카카오뱅크',
-      type: '식비',
-      content: '외식',
-      price: -50001,
-    },
-  ];
-  const query = `
+  const query =
+    `
   SELECT 
       h.id AS id,
       h.transaction_date,
