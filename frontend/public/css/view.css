@@ -106,6 +106,12 @@ body {
   background-color: rgb(244, 243, 248);
 }
 
+.view {
+  padding: 20px;
+  flex-grow: 1;
+  transition: margin-right 0.3s ease;
+}
+
 .view h1 {
   font-size: 1.5rem;
   font-weight: normal;
@@ -116,4 +122,35 @@ body {
 .controller {
   display: flex;
   justify-content: space-between;
+}
+
+.floating-btn-container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  display: flex;
+  gap: 16px;
+  transition: right 0.3s ease;
+}
+
+.floating-btn-container button {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  font-size: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 100%;
+  padding: 20px;
+}
+
+.btn-add-transaction {
+  color: white;
+  background-color: var(--red);
+}
+
+.btn-delete-transaction {
+  background-color: white;
+  border: 1px solid #ccc;
 }
