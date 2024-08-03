@@ -30,19 +30,9 @@ router.post('/', (req, res) => {
         return res.status(500).send('database error');
       }
 
-      res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
-      res.setHeader('Access-Control-Allow-Methods', 'POST');
-      res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
       res.send(`${type} inserted successfully`);
     },
   );
-});
-
-router.options('/', (req, res) => {
-  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
-  res.setHeader('Access-Control-Allow-Methods', 'POST');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-  res.send();
 });
 
 /** 수입 지출 수정  */
@@ -67,7 +57,7 @@ router.put('/:id', (req, res) => {
     if (err) {
       return res.status(500).send('database error');
     }
-    res.setHeader('Access-Control-Allow-Origin', '*');
+
     res.send('updated successfully');
   });
 });
@@ -80,7 +70,7 @@ router.delete('/:id', (req, res) => {
     if (err) {
       return res.status(500).send('database error');
     }
-    res.setHeader('Access-Control-Allow-Origin', '*');
+
     res.send('deleted successfully');
   });
 });
@@ -139,8 +129,19 @@ router.get('/', (req, res) => {
 
     console.log(formattedResults);
 
-    res.setHeader('Access-Control-Allow-Origin', '*');
     res.json(formattedResults);
+  });
+});
+
+router.get('/detail/:id', (req, res) => {
+  const query = `SELECT * FROM household_account WHERE id = ${req.params.id}`;
+
+  db.query(query, (err, rows) => {
+    if (err) {
+      return res.status(500).send(err);
+    }
+
+    res.send(rows[0]);
   });
 });
 
