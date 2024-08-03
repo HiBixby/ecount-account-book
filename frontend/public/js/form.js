@@ -4,22 +4,17 @@ import {
   getCategories,
   getTransactionDetail,
   updateTransaction,
-} from '../api.js';
+} from './api.js';
 import { renderHistory } from './view.js';
 
 let transactionId = null;
 
 const form = document.forms.transaction;
 const deleteButton = document.getElementById('delete-btn');
-const addButton = document.querySelector('.btn-add-transaction');
 const aside = document.querySelector('.transaction-aside');
-const formCloseButton = document.querySelector('.btn-close');
 const view = document.querySelector('.view');
 const floatingButtonContainer = document.querySelector(
   '.floating-btn-container',
-);
-const deleteTransactionButton = document.querySelector(
-  '.btn-delete-transaction',
 );
 
 async function initForm() {
@@ -27,6 +22,8 @@ async function initForm() {
     deleteButton.disabled = true;
     renderCategory();
   } else {
+    deleteButton.disabled = false;
+
     try {
       const {
         type,
@@ -137,41 +134,15 @@ async function deleteHandler() {
   }
 }
 
-async function deleteSelectedTransaction() {
-  const checkboxes = document.querySelectorAll(
-    'input[type="checkbox"]:checked',
-  );
-
-  if (checkboxes.length === 0) {
-    alert('삭제할 항목을 선택해주세요.');
-    return;
-  }
-
-  if (!confirm('삭제하시겠습니까?')) {
-    return;
-  }
-
-  const transactionIds = Array.from(checkboxes).map(
-    checkbox => checkbox.closest('tr').dataset.id,
-  );
-
-  try {
-    await Promise.all(transactionIds.map(id => deleteTransaction(id)));
-
-    renderHistory();
-  } catch (error) {
-    alert('선택한 내역 삭제에 실패했습니다. 다시 시도해주세요.');
-  }
-}
-
-function openInputForm() {
+export function openInputForm(id = null) {
+  transactionId = id;
   aside.classList.add('open');
   view.style.marginRight = '440px';
   floatingButtonContainer.style.right = '460px';
   initForm();
 }
 
-function closeInputForm() {
+export function closeInputForm() {
   aside.classList.remove('open');
   view.style.marginRight = '0';
   floatingButtonContainer.style.right = '20px';
@@ -179,6 +150,7 @@ function closeInputForm() {
   form.reset();
 }
 
+// 이벤트 리스너 등록 코드
 const radioButtons = document.querySelectorAll(
   'input[name="transaction_type"]',
 );
@@ -188,21 +160,3 @@ radioButtons.forEach(radio => {
 
 form.addEventListener('submit', submitHandler);
 deleteButton.addEventListener('click', deleteHandler);
-deleteTransactionButton.addEventListener('click', deleteSelectedTransaction);
-
-// 폼 열고 닫는 이벤트
-addButton.addEventListener('click', openInputForm);
-formCloseButton.addEventListener('click', closeInputForm);
-
-document.querySelector('.view table').addEventListener('click', event => {
-  // 체크박스 클릭 시 입력 폼 열지 않음
-  if (event.target.type === 'checkbox') {
-    return;
-  }
-
-  const tr = event.target.closest('tr');
-  if (tr && tr.dataset.id) {
-    transactionId = tr.dataset.id;
-    openInputForm();
-  }
-});

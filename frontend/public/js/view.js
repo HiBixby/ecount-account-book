@@ -1,3 +1,5 @@
+import { deleteTransaction } from './api.js';
+
 const BACKEND = 'http://localhost:5000';
 let current = new Date();
 
@@ -96,6 +98,34 @@ function openReport() {
   let month = `0${current.getMonth() + 1}`.slice(-2);
   window.location.href = `report.html?year=${year}&month=${month}`;
 }
+
+export async function deleteSelectedTransaction() {
+  const checkboxes = document.querySelectorAll(
+    'input[type="checkbox"]:checked',
+  );
+
+  if (checkboxes.length === 0) {
+    alert('삭제할 항목을 선택해주세요.');
+    return;
+  }
+
+  if (!confirm('삭제하시겠습니까?')) {
+    return;
+  }
+
+  const transactionIds = Array.from(checkboxes).map(
+    checkbox => checkbox.closest('tr').dataset.id,
+  );
+
+  try {
+    await Promise.all(transactionIds.map(id => deleteTransaction(id)));
+
+    renderHistory();
+  } catch (error) {
+    alert('선택한 내역 삭제에 실패했습니다. 다시 시도해주세요.');
+  }
+}
+
 renderHistory();
 renderMonth();
 
@@ -112,6 +142,7 @@ document
 document
   .querySelector('.view .button-right')
   .addEventListener('click', showNextMonth);
+document.querySelector('.view .report').addEventListener('click', openReport);
 document
-  .querySelector('.view .report')
-  .addEventListener('click', openReport);
+  .querySelector('.btn-delete-transaction')
+  .addEventListener('click', deleteSelectedTransaction);
