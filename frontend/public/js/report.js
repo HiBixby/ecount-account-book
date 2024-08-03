@@ -35,9 +35,6 @@ async function showData(year, month, type) {
     dataByType[d.parent_type].push([d.type, d.total_price]);
   });
 
-  console.log(dataByType);
-  console.log(sum);
-
   // 총 수입을 테이블에 추가
   table.innerHTML = `
         <tr style="background-color: ${
