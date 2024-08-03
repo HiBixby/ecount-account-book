@@ -93,11 +93,6 @@ router.get('/', (req, res) => {
             ON h.category_id = c.id
     WHERE  Year(transaction_date) = "${req.query.year}"
           AND Month(transaction_date) = "${req.query.month}"
-          ${
-            req.query.type != undefined
-              ? `AND h.type = "${req.query.type}"`
-              : ''
-          }
     ORDER  BY transaction_date DESC; 
   `;
 
