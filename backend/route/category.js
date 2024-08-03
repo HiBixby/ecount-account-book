@@ -9,7 +9,7 @@ router.get('/sub', (req, res) => {
 
   // type이 수입(income) or 지출(expense)이 아닐 경우 error
   if (!type || !['income', 'expense'].includes(type)) {
-    return res.status(400).send('타입을 확인해주세요');
+    return res.status(400).json({ message: '타입을 확인해주세요' });
   }
 
   const query =
@@ -17,11 +17,11 @@ router.get('/sub', (req, res) => {
 
   db.query(query, type, (err, results) => {
     if (err) {
-      return res.status(500).send('Database error');
+      return res.status(500).json({ message: 'Database error' });
     }
 
     res.setHeader('Access-Control-Allow-Origin', '*');
-    res.send(results);
+    res.json(results);
   });
 });
 

@@ -1,12 +1,8 @@
+import { deleteTransaction } from './api.js';
+import { commaizeNumber, formatDate } from './utils.js';
+
 const BACKEND = 'http://localhost:5000';
 let current = new Date();
-
-// 날짜를 'YYYY-MM' 형식으로 포맷하는 유틸리티 함수
-function formatDate() {
-  const year = current.getFullYear();
-  const month = `0${current.getMonth() + 1}`.slice(-2);
-  return `${year}-${month}`;
-}
 
 // 서버에서 거래 내역을 가져오는 함수
 async function getHistory() {
@@ -16,11 +12,6 @@ async function getHistory() {
     }`,
   );
   return response.json();
-}
-
-// 숫자를 한국 로케일에 맞게 쉼표로 구분하는 함수
-function commaizeNumber(value) {
-  return value.toLocaleString('ko-KR');
 }
 
 // 테이블에 거래 내역을 렌더링하는 함수
@@ -89,7 +80,7 @@ export async function renderHistory() {
 
 // 현재 월을 UI에 표시하는 함수
 function renderMonth() {
-  document.querySelector('.view .month').textContent = formatDate();
+  document.querySelector('.view .month').textContent = formatDate(current);
 }
 
 // 표시된 월을 변경하고 데이터를 다시 렌더링하는 함수
@@ -112,6 +103,33 @@ function openReport() {
   }`.slice(-2)}`;
 }
 
+export async function deleteSelectedTransaction() {
+  const checkboxes = document.querySelectorAll(
+    'input[type="checkbox"]:checked',
+  );
+
+  if (checkboxes.length === 0) {
+    alert('삭제할 항목을 선택해주세요.');
+    return;
+  }
+
+  if (!confirm('삭제하시겠습니까?')) {
+    return;
+  }
+
+  const transactionIds = Array.from(checkboxes).map(
+    checkbox => checkbox.closest('tr').dataset.id,
+  );
+
+  try {
+    await Promise.all(transactionIds.map(id => deleteTransaction(id)));
+
+    renderHistory();
+  } catch (error) {
+    alert('선택한 내역 삭제에 실패했습니다. 다시 시도해주세요.');
+  }
+}
+
 // 이벤트 리스너 등록
 document
   .querySelector('.view .button-left')
@@ -126,6 +144,9 @@ document.querySelector('#select-all').addEventListener('click', () => {
     checkbox.checked = selectAllCheckbox.checked;
   });
 });
+document
+  .querySelector('.btn-delete-transaction')
+  .addEventListener('click', deleteSelectedTransaction);
 
 // 초기 렌더링
 renderHistory();
