@@ -1,4 +1,6 @@
 const BACKEND = 'http://localhost:5000';
+let current = new Date();
+
 async function getHistory() {
   const response = await fetch(BACKEND + '/account');
   return response.json();
@@ -11,7 +13,14 @@ function commaizeNumber(value) {
 export async function renderHistory() {
   const response = await getHistory();
   const table = document.querySelector('.view table');
-  table.innerHTML = ''; // 기존 테이블 내용 초기화
+  table.innerHTML = `<tr>
+            <td><input type="checkbox" /></td>
+            <td class="subtext">날짜</td>
+            <td class="subtext">자산</td>
+            <td class="subtext">분류</td>
+            <td class="subtext">내용</td>
+            <td class="subtext">금액</td>
+          </tr>`; // 기존 테이블 내용 초기화
   console.log(response);
   let totalAmount = 0;
   let incomeCnt = 0;
@@ -31,7 +40,9 @@ export async function renderHistory() {
     tr.dataset.id = data.id;
     tr.style.cursor = 'pointer';
     tr.innerHTML = `<td><input type="checkbox" /></td>
-                <td>${data.transaction_date.toLocaleString('ko-KR')}</td>
+                <td>${new Date(data.transaction_date).toLocaleString(
+                  'ko-KR',
+                )}</td>
                 <td>${data.asset}</td>
                 <td>${data.type}</td>
                 <td>${data.content}</td>
@@ -59,28 +70,31 @@ export async function renderHistory() {
   outcomeAmountElement.innerHTML = commaizeNumber(Math.abs(outcomeAmount));
 }
 
-let current = new Date();
-
 function formatDate() {
   let year = current.getFullYear();
   let month = `0${current.getMonth() + 1}`.slice(-2);
   let yyyymm = year + '-' + month;
   return yyyymm;
 }
+
 function renderMonth() {
   document.querySelector('.view .month').innerHTML = formatDate();
 }
+
 function showPrevMonth() {
   current.setMonth(current.getMonth() - 1);
   renderMonth();
 }
+
 function showNextMonth() {
   current.setMonth(current.getMonth() + 1);
   renderMonth();
 }
-function showThisMonth() {
-  current = new Date();
-  renderMonth();
+
+function openReport() {
+  let year = current.getFullYear();
+  let month = `0${current.getMonth() + 1}`.slice(-2);
+  window.location.href = `report.html?year=${year}&month=${month}`;
 }
 renderHistory();
 renderMonth();
@@ -91,6 +105,13 @@ document
 document
   .querySelector('.view .button-right')
   .addEventListener('click', showNextMonth);
+document.querySelector('.view .report').addEventListener('click', openReport);
 document
-  .querySelector('.view .reset-month')
-  .addEventListener('click', showThisMonth);
+  .querySelector('.view .button-left')
+  .addEventListener('click', showPrevMonth);
+document
+  .querySelector('.view .button-right')
+  .addEventListener('click', showNextMonth);
+document
+  .querySelector('.view .report')
+  .addEventListener('click', openReport);

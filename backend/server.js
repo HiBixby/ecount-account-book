@@ -9,7 +9,7 @@ app.use(express.json());
 
 // CORS 설정 미들웨어
 app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+  res.setHeader('Access-Control-Allow-Origin', '*'); //로컬 환경 아닐때 대비해서 *로 수정 ex) 발표 환경
   res.setHeader(
     'Access-Control-Allow-Methods',
     'GET, POST, PUT, DELETE, OPTIONS',
