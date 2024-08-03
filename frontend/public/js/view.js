@@ -2,7 +2,15 @@ const BACKEND = 'http://localhost:5000';
 let current = new Date();
 
 async function getHistory() {
-  const response = await fetch(BACKEND + '/account');
+  console.log(
+    '주소 : ' +
+      BACKEND +
+      `/account?year=${current.getFullYear()}&month=${current.getMonth() + 1}`,
+  );
+  const response = await fetch(
+    BACKEND +
+      `/account?year=${current.getFullYear()}&month=${current.getMonth() + 1}`,
+  );
   return response.json();
 }
 
@@ -11,16 +19,11 @@ function commaizeNumber(value) {
 }
 
 export async function renderHistory() {
+  const selectAllCheckbox = document.querySelector('#select-all');
+  selectAllCheckbox.checked = false;
   const response = await getHistory();
-  const table = document.querySelector('.view table');
-  table.innerHTML = `<tr>
-            <td><input type="checkbox" /></td>
-            <td class="subtext">날짜</td>
-            <td class="subtext">자산</td>
-            <td class="subtext">분류</td>
-            <td class="subtext">내용</td>
-            <td class="subtext">금액</td>
-          </tr>`; // 기존 테이블 내용 초기화
+  const table = document.querySelector('.view table tbody');
+  table.innerHTML = ``; // 기존 테이블 내용 초기화
   console.log(response);
   let totalAmount = 0;
   let incomeCnt = 0;
@@ -39,7 +42,7 @@ export async function renderHistory() {
     const tr = document.createElement('tr');
     tr.dataset.id = data.id;
     tr.style.cursor = 'pointer';
-    tr.innerHTML = `<td><input type="checkbox" /></td>
+    tr.innerHTML = `<td><input type="checkbox" class="item" /></td>
                 <td>${new Date(data.transaction_date).toLocaleString(
                   'ko-KR',
                 )}</td>
@@ -68,6 +71,17 @@ export async function renderHistory() {
   outcomeCntElement.innerHTML = outcomeCnt;
   const outcomeAmountElement = document.querySelector('.view .outcome-amount');
   outcomeAmountElement.innerHTML = commaizeNumber(Math.abs(outcomeAmount));
+
+  //개별 선택에 따라 전체 선택 체크박스 상태 변경
+  const itemCheckboxes = document.querySelectorAll('.item');
+  itemCheckboxes.forEach(function (checkbox) {
+    checkbox.addEventListener('change', function () {
+      const allChecked = Array.from(itemCheckboxes).every(
+        checkbox => checkbox.checked,
+      );
+      selectAllCheckbox.checked = allChecked;
+    });
+  });
 }
 
 function formatDate() {
@@ -84,11 +98,13 @@ function renderMonth() {
 function showPrevMonth() {
   current.setMonth(current.getMonth() - 1);
   renderMonth();
+  renderHistory();
 }
 
 function showNextMonth() {
   current.setMonth(current.getMonth() + 1);
   renderMonth();
+  renderHistory();
 }
 
 function openReport() {
@@ -112,6 +128,13 @@ document
 document
   .querySelector('.view .button-right')
   .addEventListener('click', showNextMonth);
-document
-  .querySelector('.view .report')
-  .addEventListener('click', openReport);
+document.querySelector('.view .report').addEventListener('click', openReport);
+
+//전체 선택 전체 해제 구현
+const selectAll = document.querySelector('#select-all');
+selectAll.addEventListener('click', () => {
+  const itemCheckboxes = document.querySelectorAll('.item');
+  itemCheckboxes.forEach(function (checkbox) {
+    checkbox.checked = selectAll.checked;
+  });
+});
