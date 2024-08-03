@@ -2,7 +2,15 @@ const BACKEND = 'http://localhost:5000';
 let current = new Date();
 
 async function getHistory() {
-  const response = await fetch(BACKEND + '/account');
+  console.log(
+    '주소 : ' +
+      BACKEND +
+      `/account?year=${current.getFullYear()}&month=${current.getMonth() + 1}`,
+  );
+  const response = await fetch(
+    BACKEND +
+      `/account?year=${current.getFullYear()}&month=${current.getMonth() + 1}`,
+  );
   return response.json();
 }
 
@@ -90,11 +98,13 @@ function renderMonth() {
 function showPrevMonth() {
   current.setMonth(current.getMonth() - 1);
   renderMonth();
+  renderHistory();
 }
 
 function showNextMonth() {
   current.setMonth(current.getMonth() + 1);
   renderMonth();
+  renderHistory();
 }
 
 function openReport() {
