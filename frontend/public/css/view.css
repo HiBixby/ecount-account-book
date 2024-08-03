@@ -137,7 +137,6 @@ body {
 
 .view h1 {
   font-size: 1.5rem;
-  font-weight: normal;
 }
 .subtext {
   color: var(--sub-text);

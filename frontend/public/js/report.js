@@ -40,9 +40,11 @@ async function showData(year, month, type) {
 
   // 총 수입을 테이블에 추가
   table.innerHTML = `
-        <tr>
+        <tr style="background-color: ${
+          type === 'income' ? '#e0eafb' : '#f7e8e8'
+        }; font-size: 18px">
             <td><b>총 ${type === 'income' ? '수입' : '지출'}</b></td>
-            <td>${commaizeNumber(sum)}원</td>
+            <td style="font-weight: bold;">${commaizeNumber(sum)}원</td>
         </tr>
     `;
 
@@ -54,7 +56,7 @@ async function showData(year, month, type) {
 
     types.forEach(([type, total_price]) => {
       const typeRow = document.createElement('tr');
-      typeRow.innerHTML = `<td>${type}</td><td>${commaizeNumber(
+      typeRow.innerHTML = `<td style="font-size: 14px; padding-left: 20px">${type}</td><td>${commaizeNumber(
         total_price,
       )}원</td>`;
       table.appendChild(typeRow);
