@@ -138,13 +138,19 @@ async function deleteHandler() {
 }
 
 async function deleteSelectedTransaction() {
+  const checkboxes = document.querySelectorAll(
+    'input[type="checkbox"]:checked',
+  );
+
+  if (checkboxes.length === 0) {
+    alert('삭제할 항목을 선택해주세요.');
+    return;
+  }
+
   if (!confirm('삭제하시겠습니까?')) {
     return;
   }
 
-  const checkboxes = document.querySelectorAll(
-    'input[type="checkbox"]:checked',
-  );
   const transactionIds = Array.from(checkboxes).map(
     checkbox => checkbox.closest('tr').dataset.id,
   );
