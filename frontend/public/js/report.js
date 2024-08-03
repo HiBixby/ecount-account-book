@@ -1,3 +1,6 @@
+import { getMonthlyExpenses } from './api.js';
+import { commaizeNumber } from './utils.js';
+
 const BACKEND = 'http://localhost:5000';
 const url = new URL(window.location.href);
 const params = new URLSearchParams(url.search);
@@ -12,42 +15,39 @@ async function getIncome(year, month) {
   return response.json();
 }
 
-// 숫자를 한국 로케일에 맞게 쉼표로 구분하는 함수
-function commaizeNumber(value) {
-  return value.toLocaleString('ko-KR');
-}
-
-// 수입 데이터를 테이블에 보여주는 함수
-async function showIncome(year, month) {
-  const table = document.querySelector('.income');
-  const data = await getIncome(year, month);
-  console.log(data);
+// 데이터를 테이블에 보여주는 함수
+async function showData(year, month, type) {
+  const table = document.querySelector(`.${type}`);
+  const data =
+    type === 'income'
+      ? await getIncome(year, month)
+      : await getMonthlyExpenses(year, month);
 
   let sum = 0;
-  const incomeByType = {};
+  const dataByType = {};
 
   // 데이터를 순회하면서 총 수입 및 타입별 수입을 계산
   data.forEach(d => {
     sum += d.total_price;
-    if (!incomeByType[d.parent_type]) {
-      incomeByType[d.parent_type] = [];
+    if (!dataByType[d.parent_type]) {
+      dataByType[d.parent_type] = [];
     }
-    incomeByType[d.parent_type].push([d.type, d.total_price]);
+    dataByType[d.parent_type].push([d.type, d.total_price]);
   });
 
-  console.log(incomeByType);
+  console.log(dataByType);
   console.log(sum);
 
   // 총 수입을 테이블에 추가
   table.innerHTML = `
         <tr>
-            <td><b>총 수입</b></td>
+            <td><b>총 ${type === 'income' ? '수입' : '지출'}</b></td>
             <td>${commaizeNumber(sum)}원</td>
         </tr>
     `;
 
   // 타입별 수입을 테이블에 추가
-  for (const [parentType, types] of Object.entries(incomeByType)) {
+  for (const [parentType, types] of Object.entries(dataByType)) {
     const parentRow = document.createElement('tr');
     parentRow.innerHTML = `<td><b>${parentType}</b></td><td></td>`;
     table.appendChild(parentRow);
@@ -64,9 +64,10 @@ async function showIncome(year, month) {
 
 // 현재 월을 UI에 표시하는 함수
 function showMonth() {
-  document.querySelector('h2').textContent = `${month}월`;
+  document.querySelector('h2').textContent = `${year}년 ${month}월`;
 }
 
 // 초기 화면 렌더링
-showIncome(year, month);
+showData(year, month, 'income');
+showData(year, month, 'expense');
 showMonth();
