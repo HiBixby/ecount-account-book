@@ -1,14 +1,8 @@
 import { deleteTransaction } from './api.js';
+import { commaizeNumber, formatDate } from './utils.js';
 
 const BACKEND = 'http://localhost:5000';
 let current = new Date();
-
-// 날짜를 'YYYY-MM' 형식으로 포맷하는 유틸리티 함수
-function formatDate() {
-  const year = current.getFullYear();
-  const month = `0${current.getMonth() + 1}`.slice(-2);
-  return `${year}-${month}`;
-}
 
 // 서버에서 거래 내역을 가져오는 함수
 async function getHistory() {
@@ -18,11 +12,6 @@ async function getHistory() {
     }`,
   );
   return response.json();
-}
-
-// 숫자를 한국 로케일에 맞게 쉼표로 구분하는 함수
-function commaizeNumber(value) {
-  return value.toLocaleString('ko-KR');
 }
 
 // 테이블에 거래 내역을 렌더링하는 함수
@@ -91,7 +80,7 @@ export async function renderHistory() {
 
 // 현재 월을 UI에 표시하는 함수
 function renderMonth() {
-  document.querySelector('.view .month').textContent = formatDate();
+  document.querySelector('.view .month').textContent = formatDate(current);
 }
 
 // 표시된 월을 변경하고 데이터를 다시 렌더링하는 함수

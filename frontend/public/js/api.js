@@ -82,3 +82,21 @@ export async function getTransactionDetail(id) {
     throw error;
   }
 }
+
+/* 월별 지출 데이터*/
+export async function getMonthlyExpenses(year, month) {
+  try {
+    const response = await fetch(
+      API_URL + `/report/expense?year=${year}&month=${month}`,
+    );
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message);
+    }
+
+    return response.json();
+  } catch (error) {
+    throw error;
+  }
+}
