@@ -40,7 +40,9 @@ export async function renderHistory() {
     tr.dataset.id = data.id;
     tr.style.cursor = 'pointer';
     tr.innerHTML = `<td><input type="checkbox" /></td>
-                <td>${new Date(data.transaction_date).toLocaleString('ko-KR')}</td>
+                <td>${new Date(data.transaction_date).toLocaleString(
+                  'ko-KR',
+                )}</td>
                 <td>${data.asset}</td>
                 <td>${data.type}</td>
                 <td>${data.content}</td>
@@ -80,7 +82,6 @@ function renderMonth() {
 }
 
 function showPrevMonth() {
-  console.log("asdfasd")
   current.setMonth(current.getMonth() - 1);
   renderMonth();
 }
@@ -95,11 +96,6 @@ function openReport() {
   let month = `0${current.getMonth() + 1}`.slice(-2);
   window.location.href = `report.html?year=${year}&month=${month}`;
 }
-function showThisMonth() {
-  current = new Date();
-  renderMonth();
-}
-
 renderHistory();
 renderMonth();
 
@@ -117,5 +113,5 @@ document
   .querySelector('.view .button-right')
   .addEventListener('click', showNextMonth);
 document
-  .querySelector('.view .reset-month')
+  .querySelector('.view .report')
   .addEventListener('click', openReport);
