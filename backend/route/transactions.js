@@ -29,6 +29,7 @@ router.post('/', (req, res) => {
       if (err) {
         return res.status(500).send('database error');
       }
+
       res.send(`${type} inserted successfully`);
     },
   );
@@ -56,6 +57,7 @@ router.put('/:id', (req, res) => {
     if (err) {
       return res.status(500).send('database error');
     }
+
     res.send('updated successfully');
   });
 });
@@ -68,11 +70,12 @@ router.delete('/:id', (req, res) => {
     if (err) {
       return res.status(500).send('database error');
     }
+
     res.send('deleted successfully');
   });
 });
 
-/* 수입 지출 조회 */
+
 router.get('/', (req, res) => {
   const query =
     `
@@ -104,18 +107,26 @@ router.get('/', (req, res) => {
         asset: row.asset,
         content: row.content,
         price: row.price,
-        type: row.type
-      }
+        type: row.type,
+      };
     });
 
     console.log(formattedResults);
 
-    res.setHeader('Access-Control-Allow-Origin', '*');
     res.json(formattedResults);
-
   });
+});
 
+router.get('/detail/:id', (req, res) => {
+  const query = `SELECT * FROM household_account WHERE id = ${req.params.id}`;
 
-})
+  db.query(query, (err, rows) => {
+    if (err) {
+      return res.status(500).send(err);
+    }
+
+    res.send(rows[0]);
+  });
+});
 
 module.exports = router;
