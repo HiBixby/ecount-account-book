@@ -77,21 +77,23 @@ router.delete('/:id', (req, res) => {
 
 router.get('/', (req, res) => {
   const query = `
-  SELECT 
-      h.id AS id,
-      h.transaction_date,
-      h.asset,
-      h.description as content,
-      CASE 
-          WHEN h.type = 'income' THEN h.amount
-          WHEN h.type = 'expense' THEN -h.amount
-          ELSE h.amount  -- 예외 처리: 타입이 income 또는 expense가 아닐 경우
-      END AS price,
-      c.name AS type
-      FROM 
-          household_account AS h
-      JOIN 
-          category AS c ON h.category_id = c.id;
+    SELECT h.id          AS id,
+          h.transaction_date,
+          h.asset,
+          h.description AS content,
+          CASE
+            WHEN h.type = 'income' THEN h.amount
+            WHEN h.type = 'expense' THEN -h.amount
+            ELSE h.amount
+          -- 예외 처리: 타입이 income 또는 expense가 아닐 경우
+          end           AS price,
+          c.name        AS type
+    FROM   household_account AS h
+          JOIN category AS c
+            ON h.category_id = c.id
+    WHERE  Year(transaction_date) = "${req.query.year}"
+          AND Month(transaction_date) = "${req.query.month}"
+    ORDER  BY transaction_date DESC; 
   `;
 
   db.query(query, (error, results, fields) => {
