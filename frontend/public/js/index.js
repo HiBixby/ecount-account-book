@@ -1,3 +1,9 @@
+import '../css/form.css';
+import '../css/view.css';
+import '../icon/icon-trash.png';
+import '../icon/icon-close.png';
+import '../icon/icon-down-arrow.png';
+
 import { openInputForm, closeInputForm } from './form.js';
 
 document

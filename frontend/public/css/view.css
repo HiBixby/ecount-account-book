@@ -110,16 +110,25 @@ td {
 }
 
 .ul-money-type > li {
+  display: flex;
   flex-grow: 1;
   align-items: center;
   justify-content: center;
+  border-bottom: 1px solid var(--light-gray);
+}
+
+.ul-money-type > li.active {
+  border-bottom: 2px solid var(--red);
+  margin-bottom: 1px;
 }
 
 .btn-money-type {
-  width: 100%;
   background-color: transparent;
   border: none;
-  border-bottom: 1px solid var(--light-gray);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 8px 0;
 }
 
 .btn-money-type:hover {

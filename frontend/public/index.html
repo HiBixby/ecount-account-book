@@ -4,8 +4,6 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-    <link rel="stylesheet" href="./css/view.css" />
-    <link rel="stylesheet" href="./css/form.css" />
   </head>
 
   <body>
@@ -24,23 +22,37 @@
 
       <div class="table-container">
         <ul class="ul-money-type">
-          <li>
-            <button class="btn-money-type btn-all">
-              <div>전체(<span class="total-cnt">0</span>)</div>
+          <li class="active">
+            <input
+              type="radio"
+              id="all"
+              name="money-type"
+              value="all"
+              checked
+            />
+            <label for="all" class="btn-money-type btn-all">
+              <div>전체 (<span class="total-cnt">0</span>)</div>
               <div class=""><b class="total-amount">0</b>원</div>
-            </button>
+            </label>
           </li>
           <li>
-            <button class="btn-money-type btn-income">
-              <div>수입(<span class="income-cnt">0</span>)</div>
+            <input type="radio" id="income" name="money-type" value="income" />
+            <label for="income" class="btn-money-type btn-income">
+              <div>수입 (<span class="income-cnt">0</span>)</div>
               <div class="plus"><b class="income-amount">0</b>원</div>
-            </button>
+            </label>
           </li>
           <li>
-            <button class="btn-money-type btn-outcome">
-              <div>지출(<span class="outcome-cnt">0</span>)</div>
+            <input
+              type="radio"
+              id="expense"
+              name="money-type"
+              value="expense"
+            />
+            <label for="expense" class="btn-money-type">
+              <div>지출 (<span class="outcome-cnt">0</span>)</div>
               <div class="minus"><b class="outcome-amount">0</b>원</div>
-            </button>
+            </label>
           </li>
         </ul>
         <table class="table-history">
@@ -88,19 +100,19 @@
         <div class="radio-btn-container">
           <input
             type="radio"
-            id="income"
+            id="form-radio-income"
             name="transaction_type"
             value="income"
             checked
           />
-          <label for="income" class="label-income">수입</label>
+          <label for="form-radio-income" class="label-income">수입</label>
           <input
             type="radio"
-            id="expense"
+            id="form-radio-expense"
             name="transaction_type"
             value="expense"
           />
-          <label for="expense" class="label-expense">지출</label>
+          <label for="form-radio-expense" class="label-expense">지출</label>
         </div>
         <div style="display: flex; width: 100%; gap: 16px">
           <div class="input-container">
@@ -168,9 +180,5 @@
         </div>
       </form>
     </aside>
-
-    <script src="./js/form.js" type="module"></script>
-    <script src="./js/view.js" type="module"></script>
-    <script src="./js/index.js" type="module"></script>
   </body>
 </html>

@@ -5,20 +5,20 @@ const BACKEND = 'http://localhost:5000';
 let current = new Date();
 
 // 서버에서 거래 내역을 가져오는 함수
-async function getHistory(type) {
+async function getHistory() {
   const year = current.getFullYear();
   const month = current.getMonth() + 1;
-  const typeParam =
-    type === 'income' || type === 'outcome' ? `&type=${type}` : '';
 
   const response = await fetch(
-    `${BACKEND}/account?year=${year}&month=${month}${typeParam}`,
+    `${BACKEND}/account?year=${year}&month=${month}`,
   );
+
   return response.json();
 }
 
-export async function renderHistory(type) {
+export async function renderHistory(type = '') {
   const response = await getHistory();
+
   const table = document.querySelector('.view table tbody');
   table.innerHTML = ''; // 기존 테이블 내용 초기화
 
@@ -38,7 +38,7 @@ export async function renderHistory(type) {
       outcomeAmount += data.price;
     }
     if (
-      type === undefined ||
+      type === '' ||
       (type === 'income' && data.price >= 0) ||
       (type === 'expense' && data.price < 0)
     ) {
@@ -68,6 +68,7 @@ export async function renderHistory(type) {
   });
 
   // 전체, 수입, 지출 정보를 업데이트
+
   document.querySelector('.view .total-cnt').textContent = response.length;
   const totalAmountElement = document.querySelector('.view .total-amount');
   totalAmountElement.textContent = commaizeNumber(Math.abs(totalAmount));
@@ -155,15 +156,18 @@ document
   .addEventListener('click', deleteSelectedTransaction);
 
 // 전체 / 수입 / 지출 별로 볼 수 있는 버튼 이벤트 추가
-document
-  .querySelector('.btn-all')
-  .addEventListener('click', () => renderHistory());
-document
-  .querySelector('.btn-income')
-  .addEventListener('click', () => renderHistory('income'));
-document
-  .querySelector('.btn-outcome')
-  .addEventListener('click', () => renderHistory('expense'));
+document.querySelectorAll('input[name="money-type"]').forEach(radioButton => {
+  radioButton.addEventListener('change', event => {
+    const type = event.target.value;
+    renderHistory(type === 'all' ? '' : type);
+
+    document.querySelectorAll('.ul-money-type li').forEach(li => {
+      li.classList.remove('active');
+    });
+
+    event.target.closest('li').classList.add('active');
+  });
+});
 
 // 초기 렌더링
 renderHistory();
