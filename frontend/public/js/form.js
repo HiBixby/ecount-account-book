@@ -150,6 +150,37 @@ export function closeInputForm() {
   form.reset();
 }
 
+export async function deleteSelectedTransaction() {
+  const checkboxes = document.querySelectorAll(
+    'input[type="checkbox"]:checked',
+  );
+
+  if (checkboxes.length === 0) {
+    alert('삭제할 항목을 선택해주세요.');
+    return;
+  }
+  if (!confirm('삭제하시겠습니까?')) {
+    return;
+  }
+
+  const transactionIds = Array.from(checkboxes).map(
+    checkbox => checkbox.closest('tr').dataset.id,
+  );
+
+  try {
+    await Promise.all(transactionIds.map(id => deleteTransaction(id)));
+
+    renderHistory();
+
+    // 해당 내역에 대한 폼을 열어 놓고 체크박스를 클릭해 삭제했을 경우 데이터가 남아있지 않도록 폼을 닫음
+    if (transactionIds.includes(transactionId)) {
+      closeInputForm();
+    }
+  } catch (error) {
+    alert('선택한 내역 삭제에 실패했습니다. 다시 시도해주세요.');
+  }
+}
+
 // 이벤트 리스너 등록 코드
 const radioButtons = document.querySelectorAll(
   'input[name="transaction_type"]',
@@ -160,3 +191,6 @@ radioButtons.forEach(radio => {
 
 form.addEventListener('submit', submitHandler);
 deleteButton.addEventListener('click', deleteHandler);
+document
+  .querySelector('.btn-delete-transaction')
+  .addEventListener('click', deleteSelectedTransaction);

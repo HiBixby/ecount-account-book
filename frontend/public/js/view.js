@@ -1,4 +1,3 @@
-import { deleteTransaction } from './api.js';
 import { commaizeNumber, formatDate } from './utils.js';
 
 const BACKEND = 'http://localhost:5000';
@@ -110,33 +109,6 @@ function openReport() {
   }`.slice(-2)}`;
 }
 
-export async function deleteSelectedTransaction() {
-  const checkboxes = document.querySelectorAll(
-    'input[type="checkbox"]:checked',
-  );
-
-  if (checkboxes.length === 0) {
-    alert('삭제할 항목을 선택해주세요.');
-    return;
-  }
-
-  if (!confirm('삭제하시겠습니까?')) {
-    return;
-  }
-
-  const transactionIds = Array.from(checkboxes).map(
-    checkbox => checkbox.closest('tr').dataset.id,
-  );
-
-  try {
-    await Promise.all(transactionIds.map(id => deleteTransaction(id)));
-
-    renderHistory();
-  } catch (error) {
-    alert('선택한 내역 삭제에 실패했습니다. 다시 시도해주세요.');
-  }
-}
-
 // 이벤트 리스너 등록
 document
   .querySelector('.view .button-left')
@@ -151,9 +123,6 @@ document.querySelector('#select-all').addEventListener('click', () => {
     checkbox.checked = selectAllCheckbox.checked;
   });
 });
-document
-  .querySelector('.btn-delete-transaction')
-  .addEventListener('click', deleteSelectedTransaction);
 
 // 전체 / 수입 / 지출 별로 볼 수 있는 버튼 이벤트 추가
 document.querySelectorAll('input[name="money-type"]').forEach(radioButton => {
