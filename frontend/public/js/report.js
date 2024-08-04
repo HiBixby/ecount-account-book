@@ -1,7 +1,7 @@
 import { getMonthlyExpenses } from './api.js';
 import { commaizeNumber } from './utils.js';
 
-const BACKEND = 'http://localhost:5000';
+const BACKEND = 'http://172.29.12.16:5000';
 const url = new URL(window.location.href);
 const params = new URLSearchParams(url.search);
 const year = params.get('year');
@@ -37,9 +37,8 @@ async function showData(year, month, type) {
 
   // 총 수입을 테이블에 추가
   table.innerHTML = `
-        <tr style="background-color: ${
-          type === 'income' ? '#e0eafb' : '#f7e8e8'
-        }; font-size: 18px">
+        <tr style="background-color: ${type === 'income' ? '#e0eafb' : '#f7e8e8'
+    }; font-size: 18px">
             <td><b>총 ${type === 'income' ? '수입' : '지출'}</b></td>
             <td style="font-weight: bold;">${commaizeNumber(sum)}원</td>
         </tr>

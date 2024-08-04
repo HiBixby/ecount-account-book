@@ -1,6 +1,6 @@
 import { commaizeNumber, formatDate } from './utils.js';
 
-const BACKEND = 'http://localhost:5000';
+const BACKEND = 'http://172.29.12.16:5000';
 let current = new Date();
 
 // 서버에서 거래 내역을 가져오는 함수
@@ -104,9 +104,8 @@ function showNextMonth() {
 
 // 보고서 페이지로 이동하는 함수
 function openReport() {
-  window.location.href = `report.html?year=${current.getFullYear()}&month=${`0${
-    current.getMonth() + 1
-  }`.slice(-2)}`;
+  window.location.href = `report.html?year=${current.getFullYear()}&month=${`0${current.getMonth() + 1
+    }`.slice(-2)}`;
 }
 
 // 이벤트 리스너 등록

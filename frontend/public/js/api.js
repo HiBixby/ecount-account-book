@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:5000';
+const API_URL = 'http://172.29.12.16:5000';
 
 export async function addTransaction(data) {
   try {
