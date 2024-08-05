@@ -1,5 +1,6 @@
 # ecount-account-book
 가계부
+![image](https://github.com/user-attachments/assets/25fd3dd4-4e8f-472b-b6fb-386f7958bdd1)
 
 ## 데이터베이스 및 테이블 생성
 ```mysql
